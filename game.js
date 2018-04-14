@@ -5,7 +5,8 @@ document.addEventListener('DOMContentLoaded', start)
 
 function start () {
   bindEventListeners(document.getElementsByClassName('board')[0].children)
-  console.log(document.getElementsByClassName('board')[0].children)
+  console.log(document.getElementsByClassName('board')[0].children.length)
+  console.log('called start function')
 }
 
 function bindEventListeners (dots) {
@@ -14,24 +15,36 @@ function bindEventListeners (dots) {
     // The first one is provided for you
     dots[i].addEventListener('contextmenu', makeGreen)
     dots[i].addEventListener('click', makeBlue)
+    dots[i].addEventListener('dblclick', hide)
+
+    console.log('called bindEventListener Func'+ i)
+   
   }
+
+ 
 }
 
 function makeGreen (evt) {
   evt.preventDefault()
   evt.target.classList.toggle('green')
   updateCounts()
+  console.log(evt.target.classList)
 }
 
 
 // CREATE FUNCTION makeBlue HERE
 function makeBlue (evt) {
-  evt.preventDefault()
   evt.target.classList.toggle('blue')
   updateCounts()
+  console.log(evt.target.classList)
 }
 
 // CREATE FUNCTION hide HERE
+function hide (evt) {
+  evt.target.classList.toggle('invisible')
+  updateCounts()
+  console.log(evt.target.classList)
+}
 
 function updateCounts () {
   var totals = {
@@ -39,8 +52,17 @@ function updateCounts () {
     green: 0,
     invisible: 0
   }
-  
+    
   // WRITE CODE HERE TO COUNT BLUE, GREEN, AND INVISIBLE DOTS
+  for (var i = 0; i < document.getElementsByClassName('board')[0].children.length; i++) {
+    var isBlue = document.getElementsByClassName('board')[0].children[i].classList.contains('blue')
+    var isGreen = document.getElementsByClassName('board')[0].children[i].classList.contains('green')
+    var isInvisible = document.getElementsByClassName('board')[0].children[i].classList.contains('invisible')
+   
+    if (isInvisible) { totals.invisible++}
+    if (isBlue) { totals.blue++}
+    if (isGreen) { totals.green++}
+  }
 
   // Once you've done the counting, this function will update the display
   displayTotals(totals)
